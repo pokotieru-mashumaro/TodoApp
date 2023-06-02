@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   final todoList = Todo.sampleList();
   List<Todo> _foundTodo = [];
   final _todoController = TextEditingController();
+  bool _isSearch = false;
 
   @override
   void initState() {
@@ -31,6 +32,7 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           Container(
+            margin: EdgeInsets.only(bottom: 70),
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             child: Column(
               children: [
@@ -44,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                           bottom: 20,
                         ),
                         child: Text(
-                          "すべてのTodo",
+                          _isSearch ? "検索結果" : "すべてのTodo",
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w500,
@@ -150,6 +152,12 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       _foundTodo = results;
+
+      if (enteredKeyword.isEmpty) {
+        _isSearch = false;
+      } else {
+        _isSearch = true;
+      }
     });
   }
 
