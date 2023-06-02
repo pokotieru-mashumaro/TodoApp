@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/home_page.dart';
+import 'package:flutter/services.dart';
+import 'package:todo_app/view/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,8 +11,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final darkTheme = ThemeData.from(
-        colorScheme: const ColorScheme.dark(primary: Colors.green));
+    //Androidのステータスバーのカラーを非表示にする
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+
     return MaterialApp(
       initialRoute: "/",
       routes: <String, WidgetBuilder>{
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      darkTheme: darkTheme,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
