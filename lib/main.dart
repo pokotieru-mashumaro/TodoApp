@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:todo_app/view/home.dart';
+import 'package:todo_app/view/content.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: "/",
       routes: <String, WidgetBuilder>{
-        "/": (BuildContext context) => const HomePage(
+        "/": (BuildContext context) => Content(
               title: "TodoApp",
             ),
       },
