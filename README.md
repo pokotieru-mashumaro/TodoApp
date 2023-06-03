@@ -9,15 +9,22 @@ https://www.youtube.com/watch?v=K4P5DZ9TRns
 
 
 
-## 改良点1
+## 修正1
 検索中のタイトル変化
 [untitled.webm](https://github.com/pokotieru-mashumaro/TodoApp/assets/121010614/8cf778af-592b-462f-b55d-0cd1dbd8604a)
 
 ***
 
-## 改良点2
+## 修正2
 StateFullWidgetからHooksに変更
 
 ***
+
+## 修正3
+スワイプ削除機能の実装
+[修正3.webm](https://github.com/pokotieru-mashumaro/TodoApp/assets/121010614/a595d691-07ad-4630-9f2e-37473abf887d)
+
+***
+
 
 逐次改良を試みます。。。
