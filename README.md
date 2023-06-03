@@ -11,7 +11,7 @@ https://www.youtube.com/watch?v=K4P5DZ9TRns
 
 ## 改良点1
 検索中のタイトル変化
-![untitled](https://github.com/pokotieru-mashumaro/TodoApp/assets/121010614/9e57f49d-9f9c-4c60-96a3-dca1440b45dc)
+[untitled.webm](https://github.com/pokotieru-mashumaro/TodoApp/assets/121010614/8cf778af-592b-462f-b55d-0cd1dbd8604a)
 
 ***
 
