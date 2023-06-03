@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/component/edit_item.dart';
 import 'package:todo_app/constant/colors.dart';
 import 'package:todo_app/model/todo.dart';
 
 class TodoItem extends StatelessWidget {
   final Todo todo;
   final onTodoChange;
-  final onDeleteItem;
+  final onEditItem;
 
   const TodoItem({
     Key? key,
     required this.todo,
     required this.onTodoChange,
-    required this.onDeleteItem,
+    required this.onEditItem,
   }) : super(key: key);
 
   @override
@@ -43,16 +44,20 @@ class TodoItem extends StatelessWidget {
           padding: EdgeInsets.all(0),
           margin: EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: tdRed,
+            color: tdBlue,
             borderRadius: BorderRadius.circular(5),
           ),
           child: IconButton(
-            onPressed: () {
-              onDeleteItem(todo.id);
-            },
+            onPressed: () => showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (BuildContext context) {
+                return EditItem();
+              },
+            ),
             color: Colors.white,
             iconSize: 18,
-            icon: Icon(Icons.delete),
+            icon: Icon(Icons.edit),
           ),
         ),
       ),

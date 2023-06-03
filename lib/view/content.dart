@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:todo_app/component/edit_item.dart';
 import 'package:todo_app/component/todo_item.dart';
 import 'package:todo_app/constant/colors.dart';
 import 'package:todo_app/model/todo.dart';
@@ -25,6 +26,16 @@ class Content extends HookWidget {
       _foundTodo.value = _foundTodo.value
           .map((item) => item == todo ? updatedTodo : item)
           .toList();
+    }
+
+    void _editTodoItem(Todo todo, String newText) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return EditItem();
+        },
+      );
     }
 
     void _deleteTodoItem(String id) {
@@ -134,7 +145,7 @@ class Content extends HookWidget {
                           child: TodoItem(
                             todo: todo,
                             onTodoChange: _handleTodoChange,
-                            onDeleteItem: _deleteTodoItem,
+                            onEditItem: _deleteTodoItem,
                           ),
                         ),
                     ],
