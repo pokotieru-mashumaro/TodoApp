@@ -1,98 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:todo_app/component/todo_item.dart';
 import 'package:todo_app/constant/colors.dart';
 import 'package:todo_app/model/todo.dart';
 
-class Content extends HookWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({super.key, required this.title});
+
   final String title;
 
-  Content({super.key, required this.title});
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final todoList = Todo.sampleList();
+  List<Todo> _foundTodo = [];
+  final _todoController = TextEditingController();
+  bool _isSearch = false;
+
+  @override
+  void initState() {
+    _foundTodo = todoList;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final todoList = useState(Todo.sampleList());
-    final _foundTodo = useState<List<Todo>>([]);
-    final _todoController = useTextEditingController();
-    final _isSearch = useState<bool>(false);
-
-    void _handleTodoChange(Todo todo) {
-      final updatedTodo = Todo(
-        id: todo.id,
-        text: todo.text,
-        isDone: !todo.isDone,
-      );
-      _foundTodo.value = _foundTodo.value
-          .map((item) => item == todo ? updatedTodo : item)
-          .toList();
-    }
-
-    void _deleteTodoItem(String id) {
-      todoList.value.removeWhere((item) => item.id == id);
-    }
-
-    void _addTodoItem(String todoText) {
-      todoList.value.add(Todo(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        text: todoText,
-      ));
-      _foundTodo.value = [...todoList.value]; //これかかないと再描画されないっぽい
-
-      _todoController.clear();
-    }
-
-    void _runFilter(String enteredKeyword) {
-      List<Todo> results = [];
-      if (enteredKeyword.isEmpty) {
-        results = todoList.value;
-      } else {
-        results = todoList.value
-            .where((item) =>
-                item.text!.toLowerCase().contains(enteredKeyword.toLowerCase()))
-            .toList();
-      }
-
-      _foundTodo.value = results;
-
-      if (enteredKeyword.isEmpty) {
-        _isSearch.value = false;
-      } else {
-        _isSearch.value = true;
-      }
-    }
-
-    useEffect(
-      () {
-        _foundTodo.value = todoList.value;
-        debugPrint("データ入力");
-        return null;
-      },
-      const [],
-    );
-
-    Widget searchBox() {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(20)),
-        child: TextField(
-          onChanged: (value) => _runFilter(value),
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(0),
-            prefixIcon: Icon(
-              Icons.search,
-              color: tdBlack,
-              size: 20,
-            ),
-            prefixIconConstraints: BoxConstraints(maxHeight: 20, minWidth: 25),
-            border: InputBorder.none,
-            hintText: "検索",
-            hintStyle: TextStyle(color: tdGray),
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
       backgroundColor: tdBGColor,
       appBar: _buildAppBar(),
@@ -113,14 +46,14 @@ class Content extends HookWidget {
                           bottom: 20,
                         ),
                         child: Text(
-                          _isSearch.value ? "検索結果" : "すべてのTodo",
+                          _isSearch ? "検索結果" : "すべてのTodo",
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
-                      for (Todo todo in _foundTodo.value.reversed)
+                      for (Todo todo in _foundTodo.reversed)
                         TodoItem(
                           todo: todo,
                           onTodoChange: _handleTodoChange,
@@ -180,6 +113,73 @@ class Content extends HookWidget {
             ]),
           ),
         ],
+      ),
+    );
+  }
+
+  void _handleTodoChange(Todo todo) {
+    setState(() {
+      todo.isDone = !todo.isDone;
+    });
+  }
+
+  void _deleteTodoItem(String id) {
+    setState(() {
+      todoList.removeWhere((item) => item.id == id);
+    });
+  }
+
+  void _addTodoItem(String todoText) {
+    setState(() {
+      todoList.add(Todo(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        text: todoText,
+      ));
+    });
+    _todoController.clear();
+  }
+
+  void _runFilter(String enteredKeyword) {
+    List<Todo> results = [];
+    if (enteredKeyword.isEmpty) {
+      results = todoList;
+    } else {
+      results = todoList
+          .where((item) =>
+              item.text!.toLowerCase().contains(enteredKeyword.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      _foundTodo = results;
+
+      if (enteredKeyword.isEmpty) {
+        _isSearch = false;
+      } else {
+        _isSearch = true;
+      }
+    });
+  }
+
+  Widget searchBox() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      child: TextField(
+        onChanged: (value) => _runFilter(value),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.all(0),
+          prefixIcon: Icon(
+            Icons.search,
+            color: tdBlack,
+            size: 20,
+          ),
+          prefixIconConstraints: BoxConstraints(maxHeight: 20, minWidth: 25),
+          border: InputBorder.none,
+          hintText: "検索",
+          hintStyle: TextStyle(color: tdGray),
+        ),
       ),
     );
   }
