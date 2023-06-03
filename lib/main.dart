@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todo_app/view/content.dart';
-import 'package:todo_app/view/home.dart';
 
 void main() {
   runApp(const MyApp());

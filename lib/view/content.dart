@@ -29,6 +29,7 @@ class Content extends HookWidget {
 
     void _deleteTodoItem(String id) {
       todoList.value.removeWhere((item) => item.id == id);
+      _foundTodo.value = [...todoList.value]; //これかかないと再描画されないっぽい
     }
 
     void _addTodoItem(String todoText) {
@@ -121,10 +122,20 @@ class Content extends HookWidget {
                         ),
                       ),
                       for (Todo todo in _foundTodo.value.reversed)
-                        TodoItem(
-                          todo: todo,
-                          onTodoChange: _handleTodoChange,
-                          onDeleteItem: _deleteTodoItem,
+                        Dismissible(
+                          key: Key(todo.id!),
+                          resizeDuration: Duration(milliseconds: 10),
+                          behavior: HitTestBehavior.translucent,
+                          onDismissed: (direction) {
+                            _deleteTodoItem(todo.id!);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('$todo を削除しました')));
+                          },
+                          child: TodoItem(
+                            todo: todo,
+                            onTodoChange: _handleTodoChange,
+                            onDeleteItem: _deleteTodoItem,
+                          ),
                         ),
                     ],
                   ),
